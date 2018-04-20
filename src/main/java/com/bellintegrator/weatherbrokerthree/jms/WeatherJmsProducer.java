@@ -18,26 +18,26 @@ public class WeatherJmsProducer {
 
     private JmsTemplate jmsTemplate;
 
-//    @Resource(mappedName = "java:jboss/exported/jms/topic/weathercondition") // or "lookup"
-//    private Topic actualTopic;
+    @Resource(lookup = "java:jboss/exported/jms/topic/weathercondition") // or "mappedName"
+    private Topic actualTopic;
 
-//    @Resource(mappedName = "java:jboss/exported/jms/topic/weatherforecast")
-//    private Topic forecastTopic;
+    @Resource(lookup = "java:jboss/exported/jms/topic/weatherforecast")
+    private Topic forecastTopic;
 
     @Autowired
     public WeatherJmsProducer(JmsTemplate jmsTemplate) {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void sendActualWeather(final String topicName, final WeatherCondition condition) {
+    public void sendActualWeather(final WeatherCondition condition) {
         log.info("sending actual weather in JMS...");
-        jmsTemplate.convertAndSend(topicName, condition);
+        jmsTemplate.convertAndSend(actualTopic, condition);
         log.info("actual weather was send");
     }
 
-    public void sendWeatherForecast(final String topicName, final WeatherForecast forecast) {
+    public void sendWeatherForecast(final WeatherForecast forecast) {
         log.info("sending forecast weather in JMS...");
-        jmsTemplate.convertAndSend(topicName, forecast);
+        jmsTemplate.convertAndSend(forecastTopic, forecast);
         log.info("forecast was send");
     }
 }

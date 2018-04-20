@@ -28,8 +28,6 @@ import java.util.*;
 public class CityWeatherServiceImpl implements CityWeatherService {
 
     private final Logger log = LoggerFactory.getLogger(CityWeatherServiceImpl.class);
-    private static final String TOPIC_NAME_ACTUAL_WEATHER = "weathercondition";
-    private static final String TOPIC_NAME_FORECAST_WEATHER = "weatherforecast";
 
     private WeatherJmsProducer jmsProducer;
     private RestTemplate restTemplate;
@@ -82,7 +80,7 @@ public class CityWeatherServiceImpl implements CityWeatherService {
         } else {
             throw new WeatherException("Wrong city name!");
         }
-        jmsProducer.sendWeatherForecast(TOPIC_NAME_FORECAST_WEATHER, forecast);
+        jmsProducer.sendWeatherForecast(forecast);
     }
 
     /**
@@ -107,7 +105,7 @@ public class CityWeatherServiceImpl implements CityWeatherService {
         } else {
             throw new WeatherException("Wrong city name!");
         }
-        jmsProducer.sendActualWeather(TOPIC_NAME_ACTUAL_WEATHER, weather);
+        jmsProducer.sendActualWeather(weather);
     }
 
     private Map<String, String> setParamsForWeatherRequest(String cityName, String degreeParam, String typeInfo) {
